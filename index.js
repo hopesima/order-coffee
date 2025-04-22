@@ -7,8 +7,10 @@ button.addEventListener('click', () => {
     const firstBeverageField = form.querySelector('.beverage');
     const newBeverage = firstBeverageField.cloneNode(true);
     const beverageCount = newBeverage.querySelector('.beverage-count');
-    const currentCount = form.querySelectorAll('.beverage').length + 1; 
+    const currentCount = form.querySelectorAll('.beverage').length + 1;
     beverageCount.textContent = `Напиток №${currentCount}`;
+
+    updateRadioNames(newBeverage, currentCount);
 
     const dB = newBeverage.getElementsByClassName('delete-beverage')[0];
     configureButton(dB);
@@ -17,7 +19,12 @@ button.addEventListener('click', () => {
     form.insertBefore(newBeverage, form.querySelector('.add-button').parentElement);
 });
 
-
+function updateRadioNames(newBeverage, count) {
+    const radios = newBeverage.querySelectorAll('input[type="radio"]');
+    radios.forEach((radio) => {
+        radio.name = `milk-${count}`;  // Присваиваем уникальное имя для группы радиокнопок
+    });
+}
 const configureButton = (b) => {
     const deleteButtonAction = (el) => {
         if (deleteButtonsCount > 1) {
@@ -32,23 +39,3 @@ const configureButton = (b) => {
 
 const deleteButton = document.getElementsByClassName('delete-beverage')[0];
 configureButton(deleteButton);
-
-const submitButton = document.querySelector('.submit-button');
-const modal = document.getElementById('myModal');
-const closeBtn = document.querySelector('.close');
-
-submitButton.addEventListener('click', (e) => {
-  e.preventDefault(); 
-  modal.style.display = 'flex'; 
-});
-
-
-closeBtn.addEventListener('click', () => {
-  modal.style.display = 'none';
-});
-
-window.addEventListener('click', (e) => {
-  if (e.target === modal) {
-    modal.style.display = 'none';
-  }
-});
