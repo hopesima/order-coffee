@@ -37,5 +37,40 @@ const configureButton = (b) => {
     })
 }
 
+function getBeverageWord(count) {
+    if (count % 10 === 1 && count % 100 !== 11) {
+        return 'напиток';
+    } else if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 10 || count % 100 >= 20)) {
+        return 'напитка';
+    } else {
+        return 'напитков';
+    }
+}
+
 const deleteButton = document.getElementsByClassName('delete-beverage')[0];
 configureButton(deleteButton);
+
+const submitButton = document.querySelector('.submit-button');
+const modal = document.getElementById('myModal');
+const closeBtn = document.querySelector('.close');
+
+submitButton.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const beverageCount = deleteButtonsCount;
+
+    modal.style.display = 'flex';
+    const body = modal.querySelector('.description');
+    body.textContent = `Вы заказали ${beverageCount} ${getBeverageWord(beverageCount)}`;
+});
+
+
+closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.style.display = 'none';
+    }
+});
