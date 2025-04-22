@@ -32,3 +32,23 @@ const configureButton = (b) => {
 
 const deleteButton = document.getElementsByClassName('delete-beverage')[0];
 configureButton(deleteButton);
+
+const submitButton = document.querySelector('.submit-button');
+const modal = document.getElementById('myModal');
+const closeBtn = document.querySelector('.close');
+
+submitButton.addEventListener('click', (e) => {
+  e.preventDefault(); 
+  modal.style.display = 'flex'; 
+});
+
+
+closeBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target === modal) {
+    modal.style.display = 'none';
+  }
+});
