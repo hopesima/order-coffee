@@ -22,7 +22,7 @@ button.addEventListener('click', () => {
 function updateRadioNames(newBeverage, count) {
     const radios = newBeverage.querySelectorAll('input[type="radio"]');
     radios.forEach((radio) => {
-        radio.name = `milk-${count}`;  // Присваиваем уникальное имя для группы радиокнопок
+        radio.name = `milk-${count}`;
     });
 }
 const configureButton = (b) => {
@@ -50,20 +50,58 @@ function getBeverageWord(count) {
 const deleteButton = document.getElementsByClassName('delete-beverage')[0];
 configureButton(deleteButton);
 
+const closeBtn = document.querySelector('.close');
 const submitButton = document.querySelector('.submit-button');
 const modal = document.getElementById('myModal');
-const closeBtn = document.querySelector('.close');
+const modalText = document.getElementById('modal-text');
+const beveragesTable = document.getElementById('beverages-table').getElementsByTagName('tbody')[0];
+
 
 submitButton.addEventListener('click', (e) => {
     e.preventDefault();
-
     const beverageCount = deleteButtonsCount;
 
+    const beverageWord = getBeverageWord(beverageCount);
+
+    modalText.textContent = `Вы заказали ${beverageCount} ${beverageWord}`;
+
+    beveragesTable.innerHTML = '';
+
+    const beverages = document.querySelectorAll('.beverage');
+    beverages.forEach((beverage) => {
+        const name = beverage.querySelector('select').value;
+        const milk = getSelectedMilk(beverage);
+        const options = getSelectedOptions(beverage);
+
+        const row = beveragesTable.insertRow();
+        row.insertCell(0).textContent = name.charAt(0).toUpperCase() + name.slice(1);
+        row.insertCell(1).textContent = milk;
+        row.insertCell(2).textContent = options;
+    });
+
     modal.style.display = 'flex';
-    const body = modal.querySelector('.description');
-    body.textContent = `Вы заказали ${beverageCount} ${getBeverageWord(beverageCount)}`;
 });
 
+function getSelectedMilk(beverage) {
+    const milkRadios = beverage.querySelectorAll('input[type="radio"]');
+    for (const radio of milkRadios) {
+        if (radio.checked) {
+            return radio.nextElementSibling.textContent.trim();
+        }
+    }
+    return 'Не выбрано';
+}
+
+function getSelectedOptions(beverage) {
+    const optionsCheckboxes = beverage.querySelectorAll('input[type="checkbox"]');
+    const selectedOptions = [];
+    optionsCheckboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+            selectedOptions.push(checkbox.nextElementSibling.textContent.trim());
+        }
+    });
+    return selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Не выбрано';
+}
 
 closeBtn.addEventListener('click', () => {
     modal.style.display = 'none';
