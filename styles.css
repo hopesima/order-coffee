@@ -45,3 +45,8 @@
     border-radius: 5px;
 }
 
+.delete-beverage {
+    position: relative;
+    left: 200px;
+    top: -323px;
+}
